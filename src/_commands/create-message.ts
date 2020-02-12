@@ -1,23 +1,25 @@
-import * as useCase from '~/useCase'
+import {selectScope, selectType, inputBody, inputDescription, inputFooter}  from '~/useCase'
 import {nextStep, init, config} from '~/service'
+import {removeTail} from '~/util'
 
-const {typeList, scopeList} = config
+const {types, scopes} = config
 
 export const main = async () => {
   const {input} = init()
 
-  input.type = (await useCase.selectType(typeList)).type
+  input.type = (await selectType({choices: types})).type
   nextStep(input)
 
-  input.scope = (await useCase.selectScope(scopeList)).scope
+  input.scope = (await selectScope({choices: scopes})).scope
   nextStep(input)
 
-  input.description = (await useCase.inputDescription()).description
+  input.description = (await inputDescription()).description
+  input.description = removeTail(input.description) // TODO multiline
   nextStep(input)
 
-  input.body = (await useCase.inputBody()).body
+  input.body = (await inputBody()).body
   nextStep(input)
 
-  input.footer = (await useCase.inputFooter()).footer
+  input.footer = (await inputFooter()).footer
   nextStep(input)
 }

@@ -6,7 +6,7 @@ export type TypeList =  {
 export const selectType = ({choices}: TypeList) => prompt({
   type: 'autocomplete',
   name: 'type',
-  message: '111111111 type  ?',
+  message: 'Select type...',
   limit: 10,
   choices,
 })
@@ -17,7 +17,7 @@ export type ScopeList =  {
 export const selectScope = ({choices}: ScopeList) => prompt({
   type: 'autocomplete',
   name: 'scope',
-  message: '2222222 scope ?',
+  message: 'Select scope...',
   limit: 10,
   choices,
 })
@@ -25,18 +25,18 @@ export const selectScope = ({choices}: ScopeList) => prompt({
 export const inputDescription = () => prompt({
   type: 'input',
   name: 'description',
-  message: '3333333333333 description ?',
+  message: 'Input description...',
 })
 
 export const inputBody = () => prompt({
   type: 'input',
   name: 'body',
   multiline: true,
-  message: '44444444 body (multi line) ?',
+  message: 'Input body...',
 })
 
 export const inputFooter = () => prompt({
   type: 'input',
   name: 'footer',
-  message: '5555 footer ?',
+  message: 'Input footer...',
 })

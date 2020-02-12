@@ -1,34 +1,27 @@
 import {ConventionalCommitsMessage, ConventionalCommitsMessageObj} from '~/domain'
+type C = ConventionalCommitsMessageObj
 const chalk = require('chalk')
 
-// TODO 頑張る
+// TODO 入力済みの判定は、値では不可能である
 const inputOrDefault = {
-  type: (p: any, p2: any) => p ? `${p}` : `<${p2}>`,
-  scope: (p: any, p2: any) => p ? `(${p}):` : `[${p2}]:`,
-  description: (p: any, p2: any) => p ? `${p}` : `<${p2}>`,
-  body: (p: any, p2: any) => p ? `${p}` : `[${p2}]`,
-  footer: (p: any, p2: any) => p ? `${p}` : `[${p2}]`,
+  type: (inputted: C['type'], base: C['type']) => inputted ? `${inputted}` : `<${base}>`,
+  scope: (inputted: C['body'], base: C['body']) => inputted ? `(${inputted}):` : `[${base}]:`,
+  description: (inputted: C['description'], base: C['description']) => inputted ? `${inputted}` : `<${base}>`,
+  body: (inputted: C['body'], base: C['body']) => inputted ? `${inputted}` : `[${base}]`,
+  footer: (inputted: C['footer'], base: C['footer']) => inputted ? `${inputted}` : `[${base}]`,
 }
 
-type Tpl = (obj: ConventionalCommitsMessageObj, input: any)  => ConventionalCommitsMessage
-export const tpl: Tpl = (defaultObj, i) =>
+type Tpl = (base: C, input: C)  => ConventionalCommitsMessage
+export const tpl: Tpl = (base, inputted) =>
   `
-${inputOrDefault.type(i.type, defaultObj.type)}${inputOrDefault.scope(i.scope, defaultObj.scope)} ${inputOrDefault.description(i.description, defaultObj.description)}
+${inputOrDefault.type(inputted.type, base.type)}${inputOrDefault.scope(inputted.scope, base.scope)} ${inputOrDefault.description(inputted.description, base.description)}
 
-${inputOrDefault.body(i.body, defaultObj.body)}
+${inputOrDefault.body(inputted.body, base.body)}
 
-${inputOrDefault.footer(i.footer, defaultObj.footer)}
+${inputOrDefault.footer(inputted.footer, base.footer)}
 `
 
-export const boxenConf = {
-  float: 'center',
-  padding: 2,
-  borderColor: 'blue',
-  margin: 2,
-  borderStyle: 'double',
-}
-
-export const decoratedMessageObj: ConventionalCommitsMessageObj = {
+export const decorationObj: C = {
   type: chalk.red('type'),
   scope: chalk.green('optional scope'),
   description: chalk.red('description'),
