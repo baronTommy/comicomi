@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+const fs = require('fs')
+const path = require('path')
+const project = path.join(__dirname, '../tsconfig.json')
+const dev = fs.existsSync(project)
+
+const baseUrl = dev ? 'src' : 'lib'
+
+const tsConfigPaths = require('tsconfig-paths')
+
+tsConfigPaths.register({
+  baseUrl,
+  paths: {
+    '~/*': ['./*'],
+  },
+})
+
+require('@oclif/command').run()
+.then(require('@oclif/command/flush'))
+.catch(require('@oclif/errors/handle'))
